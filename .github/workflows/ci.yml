@@ -50,12 +50,15 @@ jobs:
 
       - name: Build packages
         run: pnpm build:packages
+        timeout-minutes: 3
 
       - name: Lint
         run: pnpm lint
+        timeout-minutes: 3
 
       - name: TypeScript check
         run: pnpm --filter web run type-check
+        timeout-minutes: 5
 
   unit-tests:
     name: Unit Tests
