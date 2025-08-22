@@ -5,13 +5,19 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   
-  // Image optimization for Vercel
+  // Static export for Cloudflare Pages compatibility
+  output: process.env.CLOUDFLARE_PAGES ? 'export' : undefined,
+  trailingSlash: process.env.CLOUDFLARE_PAGES ? true : false,
+  
+  // Image optimization
   images: {
     domains: [
       'images.unsplash.com',
       'via.placeholder.com',
     ],
     formats: ['image/webp', 'image/avif'],
+    // Disable image optimization for static export
+    unoptimized: process.env.CLOUDFLARE_PAGES ? true : false,
   },
   
   // Environment variables
