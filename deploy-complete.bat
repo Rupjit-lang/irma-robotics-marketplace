@@ -20,10 +20,10 @@ echo Repository URL: %REPO_URL%
 echo.
 
 echo Step 1: Connecting to GitHub...
-& "C:\Program Files\Git\bin\git.exe" remote set-url origin %REPO_URL%
+"C:\Program Files\Git\bin\git.exe" remote set-url origin %REPO_URL%
 
 echo Step 2: Pushing all code to GitHub...
-& "C:\Program Files\Git\bin\git.exe" push -u origin main
+"C:\Program Files\Git\bin\git.exe" push -u origin main
 
 if %ERRORLEVEL% equ 0 (
     echo.
