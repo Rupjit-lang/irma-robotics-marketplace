@@ -37,7 +37,7 @@ if %ERRORLEVEL% equ 0 (
     echo 5. Select repository: irma-marketplace
     echo 6. Use these build settings:
     echo    - Framework: Next.js (Static HTML Export)
-    echo    - Build command: cd apps/web ^&^& npm run build
+    echo    - Build command: cd apps/web ^&^& pnpm build
     echo    - Build output directory: apps/web/out
     echo    - Node.js version: 18
     echo.

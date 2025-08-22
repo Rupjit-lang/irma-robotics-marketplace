@@ -31,7 +31,7 @@
 
 ### Framework Preset
 - **Framework**: Next.js (Static HTML Export)
-- **Build command**: `cd apps/web && npm run build`
+- **Build command**: `cd apps/web && pnpm build`
 - **Build output directory**: `apps/web/out`
 - **Root directory**: [Leave empty]
 
