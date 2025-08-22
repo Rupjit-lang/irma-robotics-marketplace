@@ -1,181 +1,93 @@
 # ✅ IRMA Marketplace Deployment Checklist
 
-## 📦 Pre-Deployment Verification
+## 🚀 IRMA Marketplace Deployment Checklist
 
-### **✅ All Files Ready**
-- [x] `vercel.json` - Optimized for pnpm monorepo
-- [x] `next.config.js` - Performance and security headers
-- [x] `.gitignore` - Excludes sensitive files
-- [x] `.env.vercel` - Environment variables template
-- [x] `README.md` - Professional documentation
-- [x] `package.json` - Proper pnpm workspace configuration
-- [x] `pnpm-workspace.yaml` - Workspace definition
-- [x] Deployment scripts (`.bat` and `.sh`)
+## Pre-Deployment Status ✅
 
-### **✅ Project Structure Verified**
-```
-IRMA QODER/
-├── apps/web/           # Next.js 14 App Router ✅
-├── packages/lib/       # Matching engine ✅
-├── docs/              # Documentation ✅
-├── vercel.json        # Deployment config ✅
-├── README.md          # Repository info ✅
-└── .gitignore         # Git exclusions ✅
-```
+- [x] **Code Repository**: All 96+ files committed to Git
+- [x] **Environment Files**: Production and demo environment configurations created
+- [x] **Deployment Scripts**: GitHub connection and Vercel deployment scripts ready
+- [x] **Documentation**: Complete setup and deployment guides available
 
-### **✅ Configuration Verified**
-- [x] **Framework**: Next.js 14 App Router
-- [x] **Package Manager**: pnpm 8.15.0
-- [x] **Build Command**: `cd apps/web && pnpm build`
-- [x] **Output Directory**: `apps/web/.next`
-- [x] **Node Version**: >=18.0.0
-- [x] **Regions**: Mumbai (bom1) + Singapore (sin1)
+## Deployment Steps
 
-## 🚀 Deployment Steps
+### 1. GitHub Repository Setup
+- [ ] Create private GitHub repository at: https://github.com
+- [ ] Repository name: `irma-marketplace`  
+- [ ] Set to **Private** (keeps code confidential)
+- [ ] Copy repository URL: `https://github.com/[username]/irma-marketplace.git`
 
-### **Step 1: Local Git Setup** ⏱️ 2 minutes
-- [ ] Run `deploy-to-vercel.bat` (Windows) or `deploy-to-vercel.sh` (Mac/Linux)
-- [ ] Or run manual git commands from `COMPLETE_DEPLOYMENT_GUIDE.md`
+### 2. Code Upload
+- [ ] Run: `.\connect-github.bat [YOUR_REPO_URL]`
+- [ ] Verify code is pushed to GitHub
+- [ ] Confirm all 96+ files are visible in GitHub repository
 
-### **Step 2: GitHub Repository** ⏱️ 1 minute  
-- [ ] Go to [github.com/new](https://github.com/new)
-- [ ] Create repository named `irma-marketplace`
-- [ ] Set to **Public** (required for free deployment)
-- [ ] **Don't initialize** with README
+### 3. Vercel Deployment
+- [ ] Sign up at: https://vercel.com (use GitHub account)
+- [ ] Click "New Project" → Import from GitHub
+- [ ] Select `irma-marketplace` repository
+- [ ] Configure build settings:
+  - Build Command: `cd apps/web && pnpm build`
+  - Output Directory: `apps/web/.next`
+  - Install Command: `pnpm install`
 
-### **Step 3: Push to GitHub** ⏱️ 1 minute
-```bash
-git remote add origin https://github.com/yourusername/irma-marketplace.git
-git branch -M main  
-git push -u origin main
-```
+### 4. Environment Variables Configuration
+Choose one option:
 
-### **Step 4: Vercel Deployment** ⏱️ 2 minutes
-- [ ] Go to [vercel.com](https://vercel.com)
-- [ ] Sign in with GitHub
-- [ ] Click "New Project"
-- [ ] Import `irma-marketplace` repository
-- [ ] Click "Deploy" (auto-detects Next.js + pnpm)
+#### Option A: Demo Deployment (Quick Test)
+- [ ] Copy variables from `.env.demo` file
+- [ ] Add to Vercel → Project Settings → Environment Variables
+- [ ] Deploy with demo configuration
 
-### **Step 5: Environment Variables** ⏱️ 5 minutes
-**In Vercel Dashboard → Settings → Environment Variables:**
+#### Option B: Production Deployment (Full Setup)
+- [ ] Set up Supabase project: https://supabase.com
+- [ ] Set up Razorpay account: https://razorpay.com
+- [ ] Copy variables from `.env.production` file
+- [ ] Replace demo values with real credentials
+- [ ] Add to Vercel environment variables
 
-#### **Database (Supabase)**
-- [ ] `DATABASE_URL`
-- [ ] `PRISMA_MIGRATE_URL`  
+### 5. Deployment & Testing
+- [ ] Click "Deploy" in Vercel
+- [ ] Wait for build completion (2-3 minutes)
+- [ ] Get live URL: `https://[project-name].vercel.app`
+- [ ] Test website functionality:
+  - [ ] Homepage loads correctly
+  - [ ] Buyer flow (/buy) works
+  - [ ] Supplier flow (/supplier) works
+  - [ ] Navigation functions properly
 
-#### **Authentication**
-- [ ] `NEXT_PUBLIC_SUPABASE_URL`
-- [ ] `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- [ ] `SUPABASE_SERVICE_ROLE_KEY`
+## Expected Timeline
 
-#### **Payments (Razorpay)**  
-- [ ] `RAZORPAY_KEY_ID`
-- [ ] `RAZORPAY_KEY_SECRET`
-- [ ] `NEXT_PUBLIC_RAZORPAY_KEY_ID`
-- [ ] `ROUTE_WEBHOOK_SECRET`
+| Step | Duration | Status |
+|------|----------|---------|
+| GitHub Setup | 2 minutes | ⏳ Pending |
+| Code Upload | 1 minute | ⏳ Pending |
+| Vercel Account | 2 minutes | ⏳ Pending |
+| Environment Config | 3 minutes | ⏳ Pending |
+| Deployment | 3 minutes | ⏳ Pending |
+| **Total** | **11 minutes** | **⏳ Ready to Start** |
 
-#### **Application**
-- [ ] `NEXT_PUBLIC_APP_URL`
-- [ ] `NEXTAUTH_SECRET`
+## Troubleshooting
 
-### **Step 6: Redeploy** ⏱️ 2 minutes
-- [ ] Go to Deployments tab
-- [ ] Click "Redeploy" on latest deployment
-- [ ] Wait for build completion
+### Build Failures
+- Check environment variables are correctly set
+- Verify all required variables are present
+- Check build logs in Vercel dashboard
 
-## 🎯 Post-Deployment Testing
+### Runtime Errors
+- Database connection issues → Check DATABASE_URL
+- Authentication errors → Check Supabase keys
+- Payment errors → Check Razorpay configuration
 
-### **✅ Basic Functionality**
-- [ ] Homepage loads quickly (<3 seconds)
-- [ ] Click "Find Automation Solutions" works
-- [ ] Buyer form displays and submits
-- [ ] AI matching results appear
-- [ ] Click "List Your Products" works
-- [ ] Supplier onboarding flow displays
-- [ ] Mobile responsive design works
+## Success Criteria
 
-### **✅ Performance Verification**
-- [ ] Lighthouse score 90+ (run in Chrome DevTools)
-- [ ] First Contentful Paint <2 seconds
-- [ ] Largest Contentful Paint <3 seconds
-- [ ] No console errors in browser
-
-### **✅ URLs Working**
-- [ ] Production URL: `https://irma-marketplace-[random].vercel.app`
-- [ ] All internal links working
-- [ ] Images and assets loading
-- [ ] API routes responding (check Network tab)
-
-## 🔧 Optional Enhancements
-
-### **Custom Domain** ⏱️ 10 minutes
-- [ ] Purchase domain (e.g., `irma.co.in`)
-- [ ] Add in Vercel → Settings → Domains
-- [ ] Configure DNS as instructed
-- [ ] Update `NEXT_PUBLIC_APP_URL` environment variable
-
-### **Database Setup** ⏱️ 15 minutes
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Setup database
-vercel env pull .env.local
-cd apps/web
-npx prisma migrate deploy
-npx prisma db seed
-```
-
-### **Analytics & Monitoring**
-- [ ] Enable Vercel Analytics in dashboard
-- [ ] Add Google Analytics (optional)
-- [ ] Set up error tracking (Sentry, etc.)
-
-## 🆘 Common Issues & Solutions
-
-### **Build Fails**
-❌ **Error**: `pnpm: command not found`  
-✅ **Solution**: Vercel auto-detects pnpm from `packageManager` in package.json
-
-❌ **Error**: `Module not found`  
-✅ **Solution**: Check imports in Next.js files, ensure proper paths
-
-❌ **Error**: `Environment variable missing`  
-✅ **Solution**: Add all variables in Vercel dashboard, then redeploy
-
-### **Deployment Issues**
-❌ **Error**: `Git authentication failed`  
-✅ **Solution**: Make sure repository is public, check GitHub permissions
-
-❌ **Error**: `Build timeout`  
-✅ **Solution**: Large projects may need Pro plan, optimize build process
-
-### **Runtime Issues**
-❌ **Error**: `Internal Server Error`  
-✅ **Solution**: Check Function Logs in Vercel dashboard
-
-❌ **Error**: `Database connection failed`  
-✅ **Solution**: Verify DATABASE_URL format and Supabase project status
-
-## 🎉 Success Indicators
-
-Your deployment is successful when:
-- ✅ Vercel build completes without errors
-- ✅ Production URL loads homepage
-- ✅ All interactive features work
-- ✅ No console errors in browser
-- ✅ Mobile version displays correctly
-- ✅ Lighthouse performance score >90
-
-## 📞 Support Resources
-
-- **Vercel Documentation**: [vercel.com/docs](https://vercel.com/docs)
-- **Next.js Deployment**: [nextjs.org/docs/deployment](https://nextjs.org/docs/deployment)
-- **Supabase Setup**: [supabase.com/docs](https://supabase.com/docs)
-- **Razorpay Integration**: [razorpay.com/docs](https://razorpay.com/docs)
+✅ **Live URL accessible**: https://[your-project].vercel.app  
+✅ **Homepage loads**: Hero section and navigation visible  
+✅ **Buyer flow**: Intake form accessible at /buy  
+✅ **Supplier flow**: Registration page accessible at /supplier  
+✅ **Private code**: GitHub repository remains private  
+✅ **Public website**: Anyone can visit the live URL
 
 ---
 
-**🎯 Total Deployment Time: ~15 minutes**  
-**🌐 Result: Production-ready IRMA marketplace live on the internet!**
+**Ready to deploy? Start with Step 1: GitHub Repository Setup!**
