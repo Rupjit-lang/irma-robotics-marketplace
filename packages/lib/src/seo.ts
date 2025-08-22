@@ -375,13 +375,8 @@ export function generateMetaTags({
 }
 
 /**
- * Utility to inject JSON-LD script into page
+ * Utility to generate JSON-LD script content
  */
-export function JsonLd({ data }: { data: any }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data, null, 2) }}
-    />
-  )
+export function generateJsonLdScript(data: any): string {
+  return JSON.stringify(data, null, 2)
 }
