@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("PRISMA_MIGRATE_URL")
+}
+
+enum OrgType {
+  BUYER
+  SUPPLIER
+}
+
+enum MembershipRole {
+  buyer_admin
+  buyer_member
+  supplier_admin
+  technician
+  ops
+}
+
+enum ProductStatus {
+  DRAFT
+  LIVE
+  DISABLED
+}
+
+enum ProductCategory {
+  AMR
+  AGV
+  SixAxis
+  SCARA
+  Conveyor
+  ASRS
+  Vision
+  Other
+}
+
+enum IntakeStatus {
+  PENDING
+  MATCHED
+  CLOSED
+}
+
+enum KYCStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  memberships Membership[]
+  intakes     Intake[]
+
+  @@map("users")
+}
+
+model Org {
+  id        String   @id @default(cuid())
+  name      String
+  gstin     String?
+  type      OrgType
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  memberships Membership[]
+  products    Product[]
+  intakes     Intake[]
+  kyc         KYC?
+
+  @@map("orgs")
+}
+
+model Membership {
+  id     String         @id @default(cuid())
+  userId String
+  orgId  String
+  role   MembershipRole
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Org  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, orgId])
+  @@index([orgId, role])
+  @@map("memberships")
+}
+
+model Product {
+  id               String          @id @default(cuid())
+  orgId            String
+  status           ProductStatus   @default(DRAFT)
+  category         ProductCategory
+  title            String
+  sku              String
+  payloadKg        Float?
+  reachMm          Float?
+  repeatabilityMm  Float?
+  maxSpeedMps      Float?
+  ipRating         String?
+  controller       String?
+  specs            Json            @default("{}")
+  priceMinINR      Float
+  priceMaxINR      Float
+  leadTimeWeeks    Int
+  deletedAt        DateTime?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  // Relations
+  org     Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  matches Match[]
+
+  @@unique([orgId, sku])
+  @@index([category])
+  @@index([orgId])
+  @@map("products")
+}
+
+model Intake {
+  id           String        @id @default(cuid())
+  buyerOrgId   String
+  createdByUserId String
+  data         Json          @default("{}")
+  status       IntakeStatus  @default(PENDING)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Relations
+  buyerOrg  Org     @relation(fields: [buyerOrgId], references: [id], onDelete: Cascade)
+  createdBy User    @relation(fields: [createdByUserId], references: [id])
+  matches   Match[]
+
+  @@index([buyerOrgId, status])
+  @@map("intakes")
+}
+
+model Match {
+  id                String   @id @default(cuid())
+  intakeId          String
+  productId         String
+  fitScore          Float
+  why               String[]
+  assumptions       String[]
+  commercials       Json     @default("{}")
+  deliveryInstall   Json     @default("{}")
+  sla               Json     @default("{}")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  intake  Intake  @relation(fields: [intakeId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([intakeId])
+  @@index([productId])
+  @@map("matches")
+}
+
+model KYC {
+  id             String    @id @default(cuid())
+  supplierOrgId  String    @unique
+  status         KYCStatus @default(PENDING)
+  fields         Json      @default("{}")
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  supplierOrg Org @relation(fields: [supplierOrgId], references: [id], onDelete: Cascade)
+
+  @@map("kyc")
+}

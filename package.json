@@ -1,0 +1,35 @@
+{
+  "name": "irma-marketplace",
+  "version": "1.0.0",
+  "description": "Industrial Robotics Marketplace - B2B vertical marketplace for automation and robotics",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm run build:packages && pnpm --filter web build",
+    "build:packages": "pnpm --filter @irma/lib build",
+    "test": "pnpm --recursive run test",
+    "test:e2e": "pnpm --filter web test:e2e",
+    "lint": "pnpm --recursive run lint",
+    "lint:fix": "pnpm --recursive run lint:fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:migrate": "pnpm --filter web db:migrate",
+    "db:seed": "pnpm --filter web db:seed",
+    "db:studio": "pnpm --filter web db:studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}

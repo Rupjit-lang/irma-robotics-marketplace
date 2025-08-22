@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRMA - Industrial Robotics Marketplace - Live Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-blue-600">IRMA</span>
+                    <span class="ml-2 text-gray-600">Industrial Robotics Marketplace</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-gray-900 px-3 py-2">About</button>
+                    <button class="text-gray-600 hover:text-gray-900 px-3 py-2">Contact</button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-6">
+                    India's First B2B Robotics Marketplace
+                </h1>
+                <p class="text-xl mb-8 max-w-3xl mx-auto">
+                    Connect with verified suppliers. Get instant quotes. Deploy automation faster.
+                    From AMRs to 6-axis robots - find the perfect solution for your manufacturing needs.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showBuyerFlow()" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg"
+                        🔍 Find Automation Solutions
+                    </button>
+                    <button onclick="showSupplierFlow()" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors shadow-lg"
+                        🏭 List Your Products
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-blue-600">500+</div>
+                    <div class="text-gray-600 mt-2">Products Listed</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-blue-600">50+</div>
+                    <div class="text-gray-600 mt-2">Verified Suppliers</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-blue-600">₹10Cr+</div>
+                    <div class="text-gray-600 mt-2">Orders Processed</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-blue-600">95%</div>
+                    <div class="text-gray-600 mt-2">Match Accuracy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Buyer Flow Modal -->
+    <div id="buyerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Tell Us Your Requirements</h2>
+                <button onclick="closeBuyerFlow()" class="text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">What's your use case?</label>
+                    <input type="text" placeholder="e.g., Pick and place operations" class="w-full p-2 border rounded-md">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Payload (kg)</label>
+                        <input type="number" placeholder="10" class="w-full p-2 border rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Timeline (weeks)</label>
+                        <input type="number" placeholder="12" class="w-full p-2 border rounded-md">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Integration Type</label>
+                    <select class="w-full p-2 border rounded-md">
+                        <option>PLC Integration</option>
+                        <option>Fieldbus</option>
+                        <option>Standalone</option>
+                    </select>
+                </div>
+                <button onclick="showMatches()" class="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700">
+                    Find Matches →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Results Modal -->
+    <div id="resultsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-6 max-w-4xl w-full max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Top 3 Matches for Your Requirements</h2>
+                <button onclick="closeResults()" class="text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <div class="space-y-4">
+                <div class="border rounded-lg p-4 bg-green-50 border-green-200">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">KUKA KR 10 R1100-2</h3>
+                            <p class="text-green-600 font-semibold">92% Match Score</p>
+                            <p class="text-sm text-gray-600 mt-1">Perfect payload match, excellent PLC integration</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">₹8.5L</div>
+                            <div class="text-sm text-gray-600">8 weeks delivery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">ABB IRB 1200</h3>
+                            <p class="text-blue-600 font-semibold">88% Match Score</p>
+                            <p class="text-sm text-gray-600 mt-1">Compact design, good speed performance</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">₹7.2L</div>
+                            <div class="text-sm text-gray-600">10 weeks delivery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">Universal Robots UR10e</h3>
+                            <p class="text-purple-600 font-semibold">85% Match Score</p>
+                            <p class="text-sm text-gray-600 mt-1">Collaborative design, easy programming</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">₹9.8L</div>
+                            <div class="text-sm text-gray-600">6 weeks delivery</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                <button class="bg-blue-600 text-white px-8 py-3 rounded-md font-semibold hover:bg-blue-700">
+                    Proceed to Payment →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Supplier Flow Modal -->
+    <div id="supplierModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full max-h-96 overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">Supplier Onboarding</h2>
+                <button onclick="closeSupplierFlow()" class="text-gray-400 hover:text-gray-600">×</button>
+            </div>
+            <div class="space-y-6">
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h3 class="font-semibold">Step 1: Company Information</h3>
+                    <p class="text-sm text-gray-600">Basic company details and contact info</p>
+                </div>
+                <div class="border-l-4 border-gray-300 pl-4">
+                    <h3 class="font-semibold text-gray-500">Step 2: GST & Legal Documents</h3>
+                    <p class="text-sm text-gray-600">GST certificate, incorporation documents</p>
+                </div>
+                <div class="border-l-4 border-gray-300 pl-4">
+                    <h3 class="font-semibold text-gray-500">Step 3: Banking Details</h3>
+                    <p class="text-sm text-gray-600">Account info for automated payouts</p>
+                </div>
+                <div class="border-l-4 border-gray-300 pl-4">
+                    <h3 class="font-semibold text-gray-500">Step 4: Product Catalog</h3>
+                    <p class="text-sm text-gray-600">CSV upload with product specifications</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-md">
+                    <p class="text-sm text-blue-800">
+                        <strong>💰 Revenue Share:</strong> Keep 85% of every sale<br>
+                        <strong>⚡ Fast Payouts:</strong> Automated transfers within 24 hours<br>
+                        <strong>🎯 Smart Matching:</strong> AI connects you with relevant buyers
+                    </p>
+                </div>
+                <button class="w-full bg-purple-600 text-white py-3 rounded-md font-semibold hover:bg-purple-700">
+                    Start Onboarding →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showBuyerFlow() {
+            document.getElementById('buyerModal').classList.remove('hidden');
+        }
+        
+        function closeBuyerFlow() {
+            document.getElementById('buyerModal').classList.add('hidden');
+        }
+        
+        function showMatches() {
+            document.getElementById('buyerModal').classList.add('hidden');
+            document.getElementById('resultsModal').classList.remove('hidden');
+        }
+        
+        function closeResults() {
+            document.getElementById('resultsModal').classList.add('hidden');
+        }
+        
+        function showSupplierFlow() {
+            document.getElementById('supplierModal').classList.remove('hidden');
+        }
+        
+        function closeSupplierFlow() {
+            document.getElementById('supplierModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
