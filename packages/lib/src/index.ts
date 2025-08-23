@@ -1,4 +1,5 @@
 export * from './matching'
+export * from './recommendations'
 
 // Utility functions
 export const formatCurrency = (amount: number): string => {

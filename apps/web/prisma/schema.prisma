@@ -64,6 +64,9 @@ model User {
   // Relations
   memberships Membership[]
   intakes     Intake[]
+  productViews       ProductView[]
+  userInteractions   UserInteraction[]
+  recommendationLogs RecommendationLog[]
 
   @@map("users")
 }
@@ -82,6 +85,11 @@ model Org {
   products    Product[]
   intakes     Intake[]
   kyc         KYC?
+  buyerPayments      Payment[] @relation("BuyerPayments")
+  supplierPayments   Payment[] @relation("SupplierPayments")
+  productViews       ProductView[] @relation("ProductViews")
+  userInteractions   UserInteraction[] @relation("UserInteractions")
+  recommendationLogs RecommendationLog[] @relation("RecommendationLogs")
 
   @@map("orgs")
 }
@@ -127,6 +135,9 @@ model Product {
   // Relations
   org     Org     @relation(fields: [orgId], references: [id], onDelete: Cascade)
   matches Match[]
+  payments         Payment[]
+  productViews     ProductView[]
+  userInteractions UserInteraction[]
 
   @@unique([orgId, sku])
   @@index([category])
@@ -147,6 +158,8 @@ model Intake {
   buyerOrg  Org     @relation(fields: [buyerOrgId], references: [id], onDelete: Cascade)
   createdBy User    @relation(fields: [createdByUserId], references: [id])
   matches   Match[]
+  payments         Payment[]
+  userInteractions UserInteraction[]
 
   @@index([buyerOrgId, status])
   @@map("intakes")
@@ -187,4 +200,119 @@ model KYC {
   supplierOrg Org @relation(fields: [supplierOrgId], references: [id], onDelete: Cascade)
 
   @@map("kyc")
+}
+
+model Payment {
+  id                 String    @id @default(cuid())
+  intakeId           String
+  productId          String
+  buyerOrgId         String
+  supplierOrgId      String
+  amount             Float
+  commissionAmount   Float
+  supplierAmount     Float
+  status             String    @default("CREATED")
+  transferStatus     String?
+  razorpayOrderId    String?   @unique
+  razorpayPaymentId  String?
+  metadata           Json      @default("{}")
+  capturedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // Relations
+  intake      Intake  @relation(fields: [intakeId], references: [id], onDelete: Cascade)
+  product     Product @relation(fields: [productId], references: [id])
+  buyerOrg    Org     @relation("BuyerPayments", fields: [buyerOrgId], references: [id])
+  supplierOrg Org     @relation("SupplierPayments", fields: [supplierOrgId], references: [id])
+
+  @@index([buyerOrgId])
+  @@index([supplierOrgId])
+  @@index([status])
+  @@map("payments")
+}
+
+model ProductView {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  orgId     String   // Buyer org for filtering recommendations
+  viewedAt  DateTime @default(now())
+  sessionId String?  // Track views within same session
+  source    String?  // How they found the product (search, recommendation, etc.)
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  org     Org     @relation("ProductViews", fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, orgId])
+  @@index([userId, orgId])
+  @@index([productId])
+  @@index([orgId])
+  @@map("product_views")
+}
+
+model UserInteraction {
+  id           String             @id @default(cuid())
+  userId       String
+  orgId        String             // Buyer org
+  productId    String?
+  intakeId     String?
+  interactionType InteractionType
+  metadata     Json               @default("{}")
+  createdAt    DateTime           @default(now())
+
+  // Relations
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org     Org      @relation("UserInteractions", fields: [orgId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  intake  Intake?  @relation(fields: [intakeId], references: [id], onDelete: Cascade)
+
+  @@index([userId, orgId])
+  @@index([orgId, interactionType])
+  @@index([productId])
+  @@map("user_interactions")
+}
+
+model RecommendationLog {
+  id              String               @id @default(cuid())
+  userId          String
+  orgId           String               // Buyer org
+  recommendationType RecommendationType
+  productIds      String[]             // Recommended product IDs
+  algorithm       String               // Algorithm used (browsing, industry, trending, etc.)
+  score           Float?               // Relevance score
+  metadata        Json                 @default("{}")
+  clickedProductId String?             // If user clicked on recommendation
+  createdAt       DateTime             @default(now())
+  clickedAt       DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org  Org  @relation("RecommendationLogs", fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([userId, orgId])
+  @@index([orgId, recommendationType])
+  @@index([recommendationType, createdAt])
+  @@map("recommendation_logs")
+}
+
+enum InteractionType {
+  VIEW_PRODUCT
+  SAVE_PRODUCT
+  SHARE_PRODUCT
+  REQUEST_QUOTE
+  COMPLETE_PAYMENT
+  DOWNLOAD_SPEC
+  CONTACT_SUPPLIER
+}
+
+enum RecommendationType {
+  BROWSING_HISTORY
+  INDUSTRY_SIMILAR
+  TRENDING_REGION
+  SIMILAR_BUYERS
+  RECENTLY_VIEWED
+  CATEGORY_POPULAR
 }
