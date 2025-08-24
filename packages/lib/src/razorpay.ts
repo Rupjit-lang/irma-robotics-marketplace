@@ -103,13 +103,13 @@ export async function createRouteTransfer(
     account: config.supplierAccountId,
     amount: supplierAmount,
     currency: 'INR',
-    source: paymentId,
     notes: {
       order_id: config.orderId,
       commission_rate: config.marketplaceCommission.toString(),
+      source_payment_id: paymentId,
       ...config.notes
     }
-  })
+  } as any)
 
   return transfer
 }
@@ -126,8 +126,9 @@ export async function getTransferDetails(transferId: string) {
  */
 export async function getPaymentTransfers(paymentId: string) {
   return await razorpay.transfers.all({
-    source: paymentId
-  })
+    expand: ['source'],
+    count: 100
+  } as any)
 }
 
 /**
@@ -198,7 +199,7 @@ export async function createLinkedAccount(supplierData: {
       addresses: {
         registered: {
           street1: supplierData.address.street1,
-          street2: supplierData.address.street2,
+          ...(supplierData.address.street2 && { street2: supplierData.address.street2 }),
           city: supplierData.address.city,
           state: supplierData.address.state,
           postal_code: supplierData.address.postalCode,
@@ -208,7 +209,7 @@ export async function createLinkedAccount(supplierData: {
     },
     legal_info: {
       pan: supplierData.panNumber,
-      gst: supplierData.gstin
+      ...(supplierData.gstin && { gst: supplierData.gstin })
     },
     brand: {
       color: '0052CC' // IRMA brand color

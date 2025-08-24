@@ -18,6 +18,7 @@
     "db:generate": "prisma generate"
   },
   "dependencies": {
+    "@irma/lib": "workspace:*",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { prisma } from '@/lib/prisma'
-import { RecommendationEngine } from '@irma/lib'
+import { RecommendationEngine } from '@/lib/recommendations'
 import { z } from 'zod'
 
 const trackViewSchema = z.object({

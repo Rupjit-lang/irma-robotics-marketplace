@@ -13,18 +13,24 @@ fi
 echo "📚 Installing workspace dependencies..."
 pnpm install --no-frozen-lockfile
 
-# Build lib package first
+# Navigate to the web app directory first to generate Prisma client
+cd apps/web
+
+# Generate Prisma client first
+echo "🗄️ Generating Prisma client..."
+pnpm exec prisma generate
+
+# Go back to root
+cd ../..
+
+# Build lib package after Prisma client is generated
 echo "🔧 Building lib package..."
 cd packages/lib
 pnpm build
 cd ../..
 
-# Navigate to the web app directory
+# Navigate back to the web app directory
 cd apps/web
-
-# Generate Prisma client
-echo "🗄️ Generating Prisma client..."
-pnpm exec prisma generate
 
 # Set environment for static export
 export NETLIFY=true

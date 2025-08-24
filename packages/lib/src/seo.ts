@@ -1,4 +1,22 @@
-import { Product, Org } from '@prisma/client'
+// Define types locally instead of importing from @prisma/client
+type Product = {
+  id: string
+  title: string
+  sku: string
+  payloadKg?: number | null
+  reachMm?: number | null
+  repeatabilityMm?: number | null
+  priceMinINR: number
+  leadTimeWeeks: number
+  ipRating?: string | null
+  status: string
+  org: Org
+}
+
+type Org = {
+  id: string
+  name: string
+}
 
 interface SEOConfig {
   siteName: string
