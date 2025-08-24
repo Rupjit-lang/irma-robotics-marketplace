@@ -5,9 +5,9 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   
-  // Static export for Cloudflare Pages compatibility
-  output: process.env.CLOUDFLARE_PAGES ? 'export' : undefined,
-  trailingSlash: process.env.CLOUDFLARE_PAGES ? true : false,
+  // Static export for Cloudflare Pages and Netlify compatibility
+  output: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? 'export' : undefined,
+  trailingSlash: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? true : false,
   
   // Image optimization
   images: {
@@ -17,7 +17,7 @@ const nextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
     // Disable image optimization for static export
-    unoptimized: process.env.CLOUDFLARE_PAGES ? true : false,
+    unoptimized: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? true : false,
   },
   
   // Environment variables

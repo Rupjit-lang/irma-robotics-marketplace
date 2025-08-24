@@ -1,0 +1,69 @@
+[build]
+  # Build command using custom script
+  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
+  
+  # Output directory for Next.js static export
+  publish = "apps/web/out"
+  
+  # Base directory is the repository root
+  base = "."
+
+[build.environment]
+  # Node.js version for build compatibility
+  NODE_VERSION = "18"
+  
+  # Enable pnpm
+  PNPM_VERSION = "8"
+  
+  # Next.js specific settings
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Build settings for Next.js with static export
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+# Redirect rules for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"], Country = ["US"]}
+  force = false
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:;"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Environment-specific build command
+[context.production]
+  command = "cd apps/web && pnpm install && pnpm build"
+  
+[context.deploy-preview]
+  command = "cd apps/web && pnpm install && pnpm build"
+
+[context.branch-deploy]
+  command = "cd apps/web && pnpm install && pnpm build"
+
+# Functions (if needed for API routes)
+[functions]
+  directory = "apps/web/.netlify/functions"
+  node_bundler = "esbuild"
