@@ -122,3 +122,6 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+
+# Avoid accidental submodule issues
+irma-robotics-marketplace/
