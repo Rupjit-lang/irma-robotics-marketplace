@@ -55,13 +55,13 @@
 
 # Environment-specific build command
 [context.production]
-  command = "cd apps/web && pnpm install && pnpm build"
+  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
   
 [context.deploy-preview]
-  command = "cd apps/web && pnpm install && pnpm build"
+  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
 
 [context.branch-deploy]
-  command = "cd apps/web && pnpm install && pnpm build"
+  command = "chmod +x build-netlify.sh && ./build-netlify.sh"
 
 # Functions (if needed for API routes)
 [functions]
