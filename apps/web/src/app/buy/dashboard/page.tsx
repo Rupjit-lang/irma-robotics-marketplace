@@ -114,24 +114,24 @@ export default async function BuyerDashboardPage({ searchParams }: DashboardPage
   const activeTab = searchParams.tab || 'overview'
 
   return (
-    <div className=\"min-h-screen bg-gray-50\">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className=\"bg-white border-b border-gray-200\">
-        <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">
-          <div className=\"py-6\">
-            <div className=\"flex items-center justify-between\">
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-6">
+            <div className="flex items-center justify-between">
               <div>
-                <h1 className=\"text-2xl font-bold text-gray-900\">
+                <h1 className="text-2xl font-bold text-gray-900">
                   Welcome back, {userRecord.name || 'there'}!
                 </h1>
-                <p className=\"text-gray-600\">
+                <p className="text-gray-600">
                   {buyerMembership.org.name} • Industrial Equipment Dashboard
                 </p>
               </div>
-              <div className=\"flex items-center space-x-4\">
-                <Link href=\"/buy\">
+              <div className="flex items-center space-x-4">
+                <Link href="/buy">
                   <Button>
-                    <Search className=\"h-4 w-4 mr-2\" />
+                    <Search className="h-4 w-4 mr-2" />
                     Find Equipment
                   </Button>
                 </Link>
@@ -139,50 +139,50 @@ export default async function BuyerDashboardPage({ searchParams }: DashboardPage
             </div>
 
             {/* Quick Stats */}
-            <div className=\"grid grid-cols-1 md:grid-cols-4 gap-4 mt-6\">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
               <Card>
-                <CardContent className=\"p-4\">
-                  <div className=\"flex items-center\">
-                    <Package className=\"h-8 w-8 text-blue-600\" />
-                    <div className=\"ml-4\">
-                      <p className=\"text-sm font-medium text-gray-600\">Active Quotes</p>
-                      <p className=\"text-2xl font-bold text-gray-900\">{organizationStats.activeQuotes}</p>
+                <CardContent className="p-4">
+                  <div className="flex items-center">
+                    <Package className="h-8 w-8 text-blue-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Active Quotes</p>
+                      <p className="text-2xl font-bold text-gray-900">{organizationStats.activeQuotes}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className=\"p-4\">
-                  <div className=\"flex items-center\">
-                    <ShoppingCart className=\"h-8 w-8 text-green-600\" />
-                    <div className=\"ml-4\">
-                      <p className=\"text-sm font-medium text-gray-600\">Total Orders</p>
-                      <p className=\"text-2xl font-bold text-gray-900\">{organizationStats.totalOrders}</p>
+                <CardContent className="p-4">
+                  <div className="flex items-center">
+                    <ShoppingCart className="h-8 w-8 text-green-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                      <p className="text-2xl font-bold text-gray-900">{organizationStats.totalOrders}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className=\"p-4\">
-                  <div className=\"flex items-center\">
-                    <Eye className=\"h-8 w-8 text-purple-600\" />
-                    <div className=\"ml-4\">
-                      <p className=\"text-sm font-medium text-gray-600\">Products Viewed</p>
-                      <p className=\"text-2xl font-bold text-gray-900\">{organizationStats.productsViewed}</p>
+                <CardContent className="p-4">
+                  <div className="flex items-center">
+                    <Eye className="h-8 w-8 text-purple-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Products Viewed</p>
+                      <p className="text-2xl font-bold text-gray-900">{organizationStats.productsViewed}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardContent className=\"p-4\">
-                  <div className=\"flex items-center\">
-                    <TrendingUp className=\"h-8 w-8 text-orange-600\" />
-                    <div className=\"ml-4\">
-                      <p className=\"text-sm font-medium text-gray-600\">Total Spent</p>
-                      <p className=\"text-2xl font-bold text-gray-900\">
+                <CardContent className="p-4">
+                  <div className="flex items-center">
+                    <TrendingUp className="h-8 w-8 text-orange-600" />
+                    <div className="ml-4">
+                      <p className="text-sm font-medium text-gray-600">Total Spent</p>
+                      <p className="text-2xl font-bold text-gray-900">
                         {formatCurrency(organizationStats.totalSpent)}
                       </p>
                     </div>

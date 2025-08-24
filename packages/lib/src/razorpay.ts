@@ -139,10 +139,12 @@ export async function reverseTransfer(
   amount?: number,
   notes?: Record<string, string>
 ) {
-  const reversal = await razorpay.transfers.reverse(transferId, {
-    amount,
-    notes
-  })
+  const reversalData: any = {
+    ...(amount !== undefined && { amount }),
+    ...(notes && { notes })
+  }
+
+  const reversal = await razorpay.transfers.reverse(transferId, reversalData)
 
   return reversal
 }
@@ -204,7 +206,7 @@ export async function createLinkedAccount(supplierData: {
           state: supplierData.address.state,
           postal_code: supplierData.address.postalCode,
           country: supplierData.address.country
-        }
+        } as any
       }
     },
     legal_info: {
@@ -223,7 +225,7 @@ export async function createLinkedAccount(supplierData: {
       account_number: supplierData.bankAccount.accountNumber,
       beneficiary_name: supplierData.bankAccount.beneficiaryName
     }
-  })
+  } as any)
 
   return account
 }

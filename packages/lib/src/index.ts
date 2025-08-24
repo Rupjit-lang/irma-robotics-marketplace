@@ -1,6 +1,7 @@
 export * from './matching'
 export * from './razorpay'
 export * from './seo'
+export * from './notifications'
 
 // Utility functions
 export const formatCurrency = (amount: number): string => {
