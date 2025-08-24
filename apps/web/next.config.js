@@ -5,9 +5,9 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
   },
   
-  // Static export for Cloudflare Pages and Netlify compatibility
-  output: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? 'export' : undefined,
-  trailingSlash: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? true : false,
+  // Static export for Netlify and Cloudflare Pages
+  output: (process.env.NETLIFY || process.env.CLOUDFLARE_PAGES) ? 'export' : undefined,
+  trailingSlash: (process.env.NETLIFY || process.env.CLOUDFLARE_PAGES) ? true : false,
   
   // Image optimization
   images: {
@@ -17,7 +17,7 @@ const nextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
     // Disable image optimization for static export
-    unoptimized: (process.env.CLOUDFLARE_PAGES || process.env.NETLIFY) ? true : false,
+    unoptimized: (process.env.NETLIFY || process.env.CLOUDFLARE_PAGES) ? true : false,
   },
   
   // Environment variables
@@ -29,9 +29,12 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
+}
+
+// Only add headers and redirects for non-static builds
+if (!process.env.NETLIFY && !process.env.CLOUDFLARE_PAGES) {
   // Security headers
-  async headers() {
+  nextConfig.headers = async function() {
     return [
       {
         source: '/(.*)',
@@ -51,10 +54,10 @@ const nextConfig = {
         ],
       },
     ];
-  },
+  };
   
   // Redirects for SEO
-  async redirects() {
+  nextConfig.redirects = async function() {
     return [
       {
         source: '/home',
@@ -62,7 +65,7 @@ const nextConfig = {
         permanent: true,
       },
     ];
-  },
+  };
 }
 
 module.exports = nextConfig
